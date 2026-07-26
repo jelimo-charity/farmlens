@@ -1,64 +1,109 @@
 import { NavLink } from "react-router-dom";
-import { SquaresFour, UploadSimple, FileText, MapTrifold, ChartBar, Plant } from "@phosphor-icons/react";
-// Bring this back once the page/route exists:
-// import { Gear } from "@phosphor-icons/react";
+import {
+  SquaresFour,
+  UploadSimple,
+  FileText,
+  MapTrifold,
+  ChartBar,
+  Plant,
+} from "@phosphor-icons/react";
+
+interface SidebarProps {
+  closeSidebar?: () => void;
+}
 
 const navItems = [
-  { to: "/dashboard", label: "Dashboard", icon: SquaresFour, end: true },
-  { to: "/report", label: "Submit Report", icon: UploadSimple },
-  { to: "/reports", label: "Reports", icon: FileText },
-  { to: "/map", label: "Map", icon: MapTrifold },
-  { to: "/analytics", label: "Analytics", icon: ChartBar },
-  // Add this back once the page/route exists:
-  // { to: "/settings", label: "Settings", icon: Gear },
+  {
+    to: "/dashboard",
+    label: "Dashboard",
+    icon: SquaresFour,
+    end: true,
+  },
+  {
+    to: "/report",
+    label: "Submit Report",
+    icon: UploadSimple,
+  },
+  {
+    to: "/reports",
+    label: "Reports",
+    icon: FileText,
+  },
+  {
+    to: "/map",
+    label: "Map",
+    icon: MapTrifold,
+  },
+  {
+    to: "/analytics",
+    label: "Analytics",
+    icon: ChartBar,
+  },
 ];
 
-export function Sidebar() {
+export function Sidebar({
+  closeSidebar,
+}: SidebarProps) {
   return (
-    <aside className="flex h-screen w-60 shrink-0 flex-col bg-[#0F3D22] text-white">
+    <aside className="flex h-screen w-64 shrink-0 flex-col overflow-y-auto border-r border-green-900 bg-[#0F3D22] text-white">
+      {/* Logo */}
       <NavLink
-  to="/"
-  className="flex items-center gap-2 border-b border-green-800 px-5 py-5 transition hover:bg-green-900/40"
->
-  <Plant
-    size={24}
-    weight="fill"
-    className="text-green-400"
-  />
+        to="/"
+        onClick={closeSidebar}
+        className="flex items-center gap-3 border-b border-green-800 px-6 py-6 transition-colors hover:bg-green-900/40"
+      >
+        <Plant
+          size={26}
+          weight="fill"
+          className="text-green-400"
+        />
 
-  <span className="text-lg font-semibold text-white">
-    FarmLens
-  </span>
-</NavLink>
+        <span className="text-xl font-semibold tracking-tight">
+          FarmLens
+        </span>
+      </NavLink>
 
-      <nav className="mt-4 flex-1 space-y-1 px-3">
+      {/* Navigation */}
+      <nav className="mt-5 flex-1 space-y-1 px-3">
         {navItems.map(({ to, label, icon: Icon, end }) => (
           <NavLink
             key={to}
             to={to}
             end={end}
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-green-700/60 text-white"
-                  : "text-green-100/80 hover:bg-green-800/40 hover:text-white"
-              }`
-            }
+            onClick={closeSidebar}
           >
-            <Icon size={18} weight={"regular"} />
-            {label}
+            {({ isActive }) => (
+              <div
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-green-700 text-white shadow-sm"
+                    : "text-green-100 hover:bg-green-800/40 hover:text-white"
+                }`}
+              >
+                <Icon
+                  size={19}
+                  weight={isActive ? "fill" : "regular"}
+                />
+
+                <span>{label}</span>
+              </div>
+            )}
           </NavLink>
         ))}
       </nav>
+
+      {/* Footer */}
       <div className="border-t border-green-800 p-3">
-  <NavLink
-    to="/"
-    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-green-100 transition hover:bg-green-800/40 hover:text-white"
-  >
-    <Plant size={18} />
-    Back to Website
-  </NavLink>
-</div>
+        <NavLink
+          to="/"
+          onClick={closeSidebar}
+          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-green-100 transition-all duration-200 hover:bg-green-800/40 hover:text-white"
+        >
+          <Plant size={18} />
+
+          <span>Back to Website</span>
+        </NavLink>
+      </div>
     </aside>
   );
 }

@@ -22,19 +22,26 @@ export function StatCard({
   accent,
 }: StatCardProps) {
   return (
-    <div className="flex h-28 items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+    <div className="flex h-full min-h-[110px] items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+      {/* Icon */}
       <div
         className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${accentStyles[accent]}`}
       >
         {icon}
       </div>
 
-      <div className="flex flex-1 flex-col justify-center min-w-0">
-        <p className="break-words text-lg font-bold leading-tight text-gray-900">
+      {/* Content */}
+      <div className="flex min-w-0 flex-1 flex-col justify-center">
+        {/* Value */}
+        <p
+          className="overflow-hidden text-ellipsis whitespace-nowrap text-base font-bold leading-tight text-gray-900 sm:text-lg lg:text-xl"
+          title={value}
+        >
           {value}
         </p>
 
-        <p className="mt-1 text-sm leading-5 text-gray-500">
+        {/* Label */}
+        <p className="mt-1 text-left text-xs leading-5 text-gray-500 sm:text-sm">
           {label}
         </p>
       </div>

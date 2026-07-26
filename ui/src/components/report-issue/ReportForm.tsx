@@ -57,7 +57,6 @@ export function ReportForm() {
         ward: values.ward || undefined,
         description: values.description || undefined,
         imageUrl: values.imageUrl || undefined,
-        
       };
 
       return ReportsApi.create(payload);
@@ -96,7 +95,19 @@ export function ReportForm() {
 
   if (metadataLoading || !metadata) {
     return (
-      <div className="rounded-xl border border-gray-200 bg-white p-10 text-center text-sm text-gray-500">
+      <div
+        className="
+          rounded-xl
+          border
+          border-gray-200
+          bg-white
+          p-6
+          text-center
+          text-sm
+          text-gray-500
+          sm:p-10
+        "
+      >
         Loading form...
       </div>
     );
@@ -104,7 +115,22 @@ export function ReportForm() {
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white p-10 text-center">
+      <div
+        className="
+          flex
+          flex-col
+          items-center
+          justify-center
+          gap-3
+          rounded-xl
+          border
+          border-gray-200
+          bg-white
+          p-6
+          text-center
+          sm:p-10
+        "
+      >
         <CheckCircle
           size={48}
           weight="fill"
@@ -122,7 +148,18 @@ export function ReportForm() {
         <button
           type="button"
           onClick={startNewReport}
-          className="mt-2 rounded-lg bg-green-700 px-4 py-2 text-white hover:bg-green-800"
+          className="
+            mt-2
+            w-full
+            rounded-lg
+            bg-green-700
+            px-4
+            py-2
+            text-sm
+            text-white
+            hover:bg-green-800
+            sm:w-auto
+          "
         >
           Submit Another Report
         </button>
@@ -131,16 +168,22 @@ export function ReportForm() {
   }
 
   return (
-    <div className="mx-auto max-w-xl space-y-6">
+    <div className="mx-auto w-full max-w-2xl space-y-6">
       <Stepper
         steps={REPORT_FORM_STEPS}
         currentStep={step}
       />
 
-      {/* Prevent native browser form submission */}
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="rounded-xl border border-gray-200 bg-white p-5"
+        className="
+          rounded-xl
+          border
+          border-gray-200
+          bg-white
+          p-4
+          sm:p-6
+        "
       >
         {step === 0 && (
           <FarmLocationStep form={form} />
@@ -170,17 +213,51 @@ export function ReportForm() {
         )}
 
         {isError && (
-          <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          <div
+            className="
+              mt-4
+              rounded-lg
+              bg-red-50
+              p-3
+              text-sm
+              text-red-700
+            "
+          >
             Something went wrong while submitting the report.
           </div>
         )}
 
-        <div className="mt-6 flex items-center justify-between">
+        <div
+          className="
+            mt-6
+            flex
+            flex-col-reverse
+            gap-3
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+          "
+        >
           <button
             type="button"
             onClick={goBack}
             disabled={step === 0}
-            className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 disabled:opacity-0"
+            className="
+              flex
+              w-full
+              items-center
+              justify-center
+              gap-1
+              rounded-lg
+              px-4
+              py-2
+              text-sm
+              font-medium
+              text-gray-600
+              hover:bg-gray-100
+              disabled:opacity-0
+              sm:w-auto
+            "
           >
             <CaretLeft size={16} />
             Back
@@ -188,21 +265,47 @@ export function ReportForm() {
 
           {step < LAST_STEP ? (
             <button
-              key="next-button"
               type="button"
               onClick={goNext}
-              className="flex items-center gap-1 rounded-lg bg-green-700 px-5 py-2 text-sm font-medium text-white hover:bg-green-800"
+              className="
+                flex
+                w-full
+                items-center
+                justify-center
+                gap-1
+                rounded-lg
+                bg-green-700
+                px-5
+                py-2
+                text-sm
+                font-medium
+                text-white
+                hover:bg-green-800
+                sm:w-auto
+              "
             >
               Next
               <CaretRight size={16} />
             </button>
           ) : (
             <button
-              key="submit-button"
               type="button"
               disabled={isPending}
               onClick={form.handleSubmit(onSubmit)}
-              className="rounded-lg bg-green-700 px-5 py-2 text-sm font-medium text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
+              className="
+                w-full
+                rounded-lg
+                bg-green-700
+                px-5
+                py-2
+                text-sm
+                font-medium
+                text-white
+                hover:bg-green-800
+                disabled:cursor-not-allowed
+                disabled:opacity-60
+                sm:w-auto
+              "
             >
               {isPending ? "Submitting..." : "Submit Report"}
             </button>

@@ -3,7 +3,11 @@ import { Field, inputClass } from "../Fields";
 import type { ReportFormValues } from "@/lib/report-form-schema";
 
 const CURRENT_YEAR = new Date().getFullYear();
-const PLANTING_YEAR_OPTIONS = Array.from({ length: 6 }, (_, i) => CURRENT_YEAR - i);
+
+const PLANTING_YEAR_OPTIONS = Array.from(
+  { length: 6 },
+  (_, i) => CURRENT_YEAR - i
+);
 
 interface FarmDetailsStepProps {
   form: UseFormReturn<ReportFormValues>;
@@ -12,16 +16,35 @@ interface FarmDetailsStepProps {
   growthStages: string[];
 }
 
-export function FarmDetailsStep({ form, crops, plantingMonths, growthStages }: FarmDetailsStepProps) {
-  const { register, formState: { errors } } = form;
+export function FarmDetailsStep({
+  form,
+  crops,
+  plantingMonths,
+  growthStages,
+}: FarmDetailsStepProps) {
+  const {
+    register,
+    formState: { errors },
+  } = form;
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-base font-semibold text-gray-900">Farm Details</h2>
+    <div className="space-y-5">
+      <h2 className="text-base font-semibold text-gray-900">
+        Farm Details
+      </h2>
 
-      <Field label="Crop" htmlFor="crop" error={errors.crop?.message}>
-        <select id="crop" className={inputClass} {...register("crop")}>
+      <Field
+        label="Crop"
+        htmlFor="crop"
+        error={errors.crop?.message}
+      >
+        <select
+          id="crop"
+          className={inputClass}
+          {...register("crop")}
+        >
           <option value="">Select crop</option>
+
           {crops.map((c) => (
             <option key={c} value={c}>
               {c}
@@ -30,7 +53,12 @@ export function FarmDetailsStep({ form, crops, plantingMonths, growthStages }: F
         </select>
       </Field>
 
-      <Field label="Farm Size (Acres)" htmlFor="farmSizeAcres" error={errors.farmSizeAcres?.message}>
+
+      <Field
+        label="Farm Size (Acres)"
+        htmlFor="farmSizeAcres"
+        error={errors.farmSizeAcres?.message}
+      >
         <input
           id="farmSizeAcres"
           type="number"
@@ -39,15 +67,30 @@ export function FarmDetailsStep({ form, crops, plantingMonths, growthStages }: F
           className={inputClass}
           placeholder="e.g. 2.5"
           {...register("farmSizeAcres", {
-            setValueAs: (v) => (v === "" ? undefined : Number(v)),
+            setValueAs: (v) =>
+              v === "" ? undefined : Number(v),
           })}
         />
       </Field>
 
-      <div className="grid grid-cols-2 gap-3">
-        <Field label="Planting Month" htmlFor="plantingMonth" error={errors.plantingMonth?.message}>
-          <select id="plantingMonth" className={inputClass} {...register("plantingMonth")}>
-            <option value="">Select month</option>
+
+      {/* Responsive two-column section */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+
+        <Field
+          label="Planting Month"
+          htmlFor="plantingMonth"
+          error={errors.plantingMonth?.message}
+        >
+          <select
+            id="plantingMonth"
+            className={inputClass}
+            {...register("plantingMonth")}
+          >
+            <option value="">
+              Select month
+            </option>
+
             {plantingMonths.map((m) => (
               <option key={m} value={m}>
                 {m}
@@ -56,15 +99,24 @@ export function FarmDetailsStep({ form, crops, plantingMonths, growthStages }: F
           </select>
         </Field>
 
-        <Field label="Planting Year" htmlFor="plantingYear" error={errors.plantingYear?.message}>
+
+        <Field
+          label="Planting Year"
+          htmlFor="plantingYear"
+          error={errors.plantingYear?.message}
+        >
           <select
             id="plantingYear"
             className={inputClass}
             {...register("plantingYear", {
-              setValueAs: (v) => (v === "" ? undefined : Number(v)),
+              setValueAs: (v) =>
+                v === "" ? undefined : Number(v),
             })}
           >
-            <option value="">Select year</option>
+            <option value="">
+              Select year
+            </option>
+
             {PLANTING_YEAR_OPTIONS.map((year) => (
               <option key={year} value={year}>
                 {year}
@@ -72,11 +124,24 @@ export function FarmDetailsStep({ form, crops, plantingMonths, growthStages }: F
             ))}
           </select>
         </Field>
+
       </div>
 
-      <Field label="Growth Stage" htmlFor="growthStage" error={errors.growthStage?.message}>
-        <select id="growthStage" className={inputClass} {...register("growthStage")}>
-          <option value="">Select growth stage</option>
+
+      <Field
+        label="Growth Stage"
+        htmlFor="growthStage"
+        error={errors.growthStage?.message}
+      >
+        <select
+          id="growthStage"
+          className={inputClass}
+          {...register("growthStage")}
+        >
+          <option value="">
+            Select growth stage
+          </option>
+
           {growthStages.map((g) => (
             <option key={g} value={g}>
               {g}
@@ -84,6 +149,7 @@ export function FarmDetailsStep({ form, crops, plantingMonths, growthStages }: F
           ))}
         </select>
       </Field>
+
     </div>
   );
 }
