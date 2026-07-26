@@ -13,13 +13,11 @@ export default function CTA() {
 <div className="relative z-10 mx-auto max-w-5xl px-6 text-center text-white">
 
   <h2 className="text-5xl font-bold leading-tight md:text-7xl">
-    Together We Can Protect Our Farms
+   Better Climate Data. Stronger Farming Communities.
   </h2>
 
   <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-green-100 md:text-xl">
-    Every report contributes to better climate decisions,
-    faster emergency response, and stronger farming
-    communities across Kenya.
+    Report climate-related crop impacts, visualize trends across regions, and support faster, data-driven decisions for farmers, organizations, and policymakers.
   </p>
 
   <div className="mt-12 flex flex-col justify-center gap-4 sm:flex-row">
