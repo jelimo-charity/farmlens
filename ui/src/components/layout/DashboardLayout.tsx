@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
@@ -8,36 +8,48 @@ import { DashboardFiltersProvider } from "@/context/dashboard-filters";
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Prevent background scrolling when the mobile sidebar is open
+  useEffect(() => {
+    document.body.style.overflow = sidebarOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
+
   return (
     <DashboardFiltersProvider>
-      {/* h-dvh (not h-screen/100vh) — 100vh on mobile browsers is calculated
-          against the largest possible viewport (address bar hidden), which
-          doesn't match the actual visible area and shows up as dead space
-          at the bottom, especially as the browser chrome shows/hides on scroll. */}
-      <div className="flex h-dvh bg-gray-50 overflow-hidden">
+      <div className="flex h-dvh overflow-hidden bg-slate-50">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:block">
+        <aside className="hidden shrink-0 lg:block">
           <Sidebar />
-        </div>
+        </aside>
 
-        {/* Mobile Sidebar Overlay */}
+        {/* Mobile Sidebar */}
         {sidebarOpen && (
           <>
             <div
-              className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
               onClick={() => setSidebarOpen(false)}
             />
 
-            <div className="fixed left-0 top-0 z-50 h-dvh lg:hidden">
+            <aside className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] lg:hidden">
               <Sidebar closeSidebar={() => setSidebarOpen(false)} />
-            </div>
+            </aside>
           </>
         )}
 
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <Topbar onMenuClick={() => setSidebarOpen(true)} />
 
-          <main className="flex-1 overflow-y-auto">
+          <main
+            className="
+              flex-1
+              overflow-y-auto
+              overscroll-contain
+              bg-slate-50
+            "
+          >
             <Outlet />
           </main>
         </div>
