@@ -70,22 +70,44 @@ export function ClimateImpactStep({
         </div>
 
 
-        <input
-          id="estimatedLossPercentage"
-          type="range"
-          min={0}
-          max={100}
-          step={5}
-          className="
-            w-full
-            cursor-pointer
-            accent-green-700
-          "
-          {...register("estimatedLossPercentage", {
-            setValueAs: (v) =>
-              v === "" ? undefined : Number(v),
-          })}
-        />
+        {/* Extra vertical padding widens the touch/drag area beyond just the
+            visual track. Thumb is enlarged via arbitrary variants (native
+            range thumbs are small and fiddly to grab precisely with a finger). */}
+        <div className="py-2">
+          <input
+            id="estimatedLossPercentage"
+            type="range"
+            min={0}
+            max={100}
+            step={5}
+            className="
+              h-2
+              w-full
+              cursor-pointer
+              appearance-none
+              rounded-full
+              bg-gray-200
+              accent-green-700
+              [&::-webkit-slider-thumb]:h-6
+              [&::-webkit-slider-thumb]:w-6
+              [&::-webkit-slider-thumb]:appearance-none
+              [&::-webkit-slider-thumb]:rounded-full
+              [&::-webkit-slider-thumb]:bg-green-700
+              [&::-webkit-slider-thumb]:shadow-md
+              [&::-moz-range-thumb]:h-6
+              [&::-moz-range-thumb]:w-6
+              [&::-moz-range-thumb]:appearance-none
+              [&::-moz-range-thumb]:rounded-full
+              [&::-moz-range-thumb]:border-0
+              [&::-moz-range-thumb]:bg-green-700
+              [&::-moz-range-thumb]:shadow-md
+            "
+            {...register("estimatedLossPercentage", {
+              setValueAs: (v) =>
+                v === "" ? undefined : Number(v),
+            })}
+          />
+        </div>
 
 
         {errors.estimatedLossPercentage && (
@@ -108,6 +130,7 @@ export function ClimateImpactStep({
         <input
           id="estimatedFinancialLoss"
           type="number"
+          inputMode="decimal"
           min="0"
           step="100"
           className={inputClass}

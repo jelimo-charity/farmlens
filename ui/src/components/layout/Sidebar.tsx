@@ -45,7 +45,10 @@ export function Sidebar({
   closeSidebar,
 }: SidebarProps) {
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col overflow-y-auto border-r border-green-900 bg-[#0F3D22] text-white">
+    // h-dvh, not h-screen — see DashboardLayout.tsx for why. w-72 on the
+    // mobile overlay (vs w-64 on desktop) gives touch targets a bit more
+    // breathing room without eating too much of a typical ~375-430px phone screen.
+    <aside className="flex h-dvh w-72 lg:w-64 shrink-0 flex-col overflow-y-auto border-r border-green-900 bg-[#0F3D22] text-white">
       {/* Logo */}
       <NavLink
         to="/"
@@ -74,14 +77,20 @@ export function Sidebar({
           >
             {({ isActive }) => (
               <div
-                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-base lg:text-sm font-medium transition-all duration-200 ${
                   isActive
                     ? "bg-green-700 text-white shadow-sm"
                     : "text-green-100 hover:bg-green-800/40 hover:text-white"
                 }`}
               >
                 <Icon
+                  size={20}
+                  className="lg:hidden"
+                  weight={isActive ? "fill" : "regular"}
+                />
+                <Icon
                   size={19}
+                  className="hidden lg:block"
                   weight={isActive ? "fill" : "regular"}
                 />
 
@@ -97,7 +106,7 @@ export function Sidebar({
         <NavLink
           to="/"
           onClick={closeSidebar}
-          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-green-100 transition-all duration-200 hover:bg-green-800/40 hover:text-white"
+          className="flex items-center gap-3 rounded-xl px-4 py-3 text-base lg:text-sm font-medium text-green-100 transition-all duration-200 hover:bg-green-800/40 hover:text-white"
         >
           <Plant size={18} />
 

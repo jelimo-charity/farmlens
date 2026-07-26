@@ -159,14 +159,14 @@ export function FarmLocationStep({ form }: FarmLocationStepProps) {
           />
         )}
         {!wards && subCounty && (
-          <p className="mt-1 text-xs text-gray-400">
+          <p className="mt-1 text-[13px] sm:text-xs text-gray-400">
             We don't have a ward list for this area yet — type it in.
           </p>
         )}
       </Field>
 
       {/* Location — resolved automatically, nothing for the farmer to fill in or tap. */}
-      <div className="rounded-lg bg-gray-50 px-3 py-2.5 text-xs">
+      <div className="rounded-lg bg-gray-50 px-3 py-2.5 text-[13px] sm:text-xs">
         {status === "locating-gps" && (
           <span className="flex items-center gap-1.5 text-gray-500">
             <Spinner size={14} className="animate-spin" />

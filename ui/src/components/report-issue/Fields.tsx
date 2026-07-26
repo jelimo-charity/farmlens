@@ -21,5 +21,9 @@ export function Field({ label, htmlFor, error, optional, children }: FieldProps)
   );
 }
 
+// text-base (16px) on mobile, text-sm (14px) from sm: up — inputs under 16px
+// trigger iOS Safari's automatic zoom-on-focus, which is the single most
+// jarring "this form feels broken on my phone" issue. py-3 (vs py-2.5) on
+// mobile gives a slightly taller, easier-to-tap field; steps back down at sm:.
 export const inputClass =
-  "w-full rounded-lg border border-gray-200 py-2.5 px-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-600";
+  "w-full rounded-lg border border-gray-200 py-3 sm:py-2.5 px-3 text-base sm:text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-600";

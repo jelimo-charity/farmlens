@@ -62,6 +62,7 @@ export function FarmDetailsStep({
         <input
           id="farmSizeAcres"
           type="number"
+          inputMode="decimal"
           step="0.1"
           min="0"
           className={inputClass}
