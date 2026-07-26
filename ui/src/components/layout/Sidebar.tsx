@@ -16,12 +16,22 @@ const navItems = [
 export function Sidebar() {
   return (
     <aside className="flex h-screen w-60 shrink-0 flex-col bg-[#0F3D22] text-white">
-      <div className="flex items-center gap-2 px-5 py-5">
-        <Plant size={24} weight="fill" className="text-green-400" />
-        <span className="text-lg font-semibold">FarmPulse</span>
-      </div>
+      <NavLink
+  to="/"
+  className="flex items-center gap-2 border-b border-green-800 px-5 py-5 transition hover:bg-green-900/40"
+>
+  <Plant
+    size={24}
+    weight="fill"
+    className="text-green-400"
+  />
 
-      <nav className="flex-1 space-y-1 px-3">
+  <span className="text-lg font-semibold text-white">
+    FarmLens
+  </span>
+</NavLink>
+
+      <nav className="mt-4 flex-1 space-y-1 px-3">
         {navItems.map(({ to, label, icon: Icon, end }) => (
           <NavLink
             key={to}
@@ -40,6 +50,15 @@ export function Sidebar() {
           </NavLink>
         ))}
       </nav>
+      <div className="border-t border-green-800 p-3">
+  <NavLink
+    to="/"
+    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-green-100 transition hover:bg-green-800/40 hover:text-white"
+  >
+    <Plant size={18} />
+    Back to Website
+  </NavLink>
+</div>
     </aside>
   );
 }

@@ -100,7 +100,8 @@ export default function ReportsPage() {
               <th className="px-4 py-3 font-medium">Sub-county</th>
               <th className="px-4 py-3 font-medium">Crop</th>
               <th className="px-4 py-3 font-medium">Acres</th>
-              <th className="px-4 py-3 font-medium">Loss %</th>
+              <th className="px-4 py-3 font-medium"> Estimated Crop Loss %</th>
+              <th className="px-4 py-3 font-medium">Estimated Financial Loss (KES)</th>
               <th className="px-4 py-3 font-medium">Impact</th>
               <th className="px-4 py-3 font-medium">Date</th>
             </tr>
@@ -115,6 +116,7 @@ export default function ReportsPage() {
                   <td className="px-4 py-3 text-gray-600">{report.crop}</td>
                   <td className="px-4 py-3 text-gray-600">{report.farmSizeAcres}</td>
                   <td className="px-4 py-3 text-gray-600">{report.estimatedLossPercentage}%</td>
+                  <td className="px-4 py-3 text-gray-600">{report.estimatedFinancialLoss}</td>
                   <td className="px-4 py-3">
                     <span
                       className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium"

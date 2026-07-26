@@ -1,0 +1,219 @@
+{
+  "id": "de619cac-fe61-4fd3-8dd4-222aba4b8275",
+  "prevId": "bb8bce3c-cc97-4336-aecf-b063b6c43de2",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.reports": {
+      "name": "reports",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "county": {
+          "name": "county",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sub_county": {
+          "name": "sub_county",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ward": {
+          "name": "ward",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "latitude": {
+          "name": "latitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "longitude": {
+          "name": "longitude",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "crop": {
+          "name": "crop",
+          "type": "crop",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "farm_size_acres": {
+          "name": "farm_size_acres",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "planting_month": {
+          "name": "planting_month",
+          "type": "planting_month",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "planting_year": {
+          "name": "planting_year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "growth_stage": {
+          "name": "growth_stage",
+          "type": "growth_stage",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "climate_event": {
+          "name": "climate_event",
+          "type": "climate_event",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "report_date": {
+          "name": "report_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "estimated_loss_percentage": {
+          "name": "estimated_loss_percentage",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "estimated_financial_loss": {
+          "name": "estimated_financial_loss",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_url": {
+          "name": "image_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.climate_event": {
+      "name": "climate_event",
+      "schema": "public",
+      "values": [
+        "Delayed Rains",
+        "Drought",
+        "Flood",
+        "Hailstorm",
+        "Strong Winds",
+        "Extreme Heat",
+        "Frost",
+        "Landslide",
+        "Pest Outbreak",
+        "Disease Outbreak",
+        "Other"
+      ]
+    },
+    "public.crop": {
+      "name": "crop",
+      "schema": "public",
+      "values": [
+        "Maize",
+        "Beans",
+        "Coffee",
+        "Tea",
+        "Potatoes",
+        "Rice",
+        "Wheat",
+        "Sorghum",
+        "Millet",
+        "Bananas",
+        "Tomatoes",
+        "Other"
+      ]
+    },
+    "public.growth_stage": {
+      "name": "growth_stage",
+      "schema": "public",
+      "values": [
+        "Recently Planted",
+        "Early Growth",
+        "Growing",
+        "Flowering",
+        "Almost Ready",
+        "Ready for Harvest"
+      ]
+    },
+    "public.planting_month": {
+      "name": "planting_month",
+      "schema": "public",
+      "values": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

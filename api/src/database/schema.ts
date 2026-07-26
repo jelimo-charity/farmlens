@@ -105,6 +105,8 @@ export const reports = pgTable("reports", {
 
   estimatedLossPercentage: real("estimated_loss_percentage").notNull(),
 
+  estimatedFinancialLoss: real("estimated_financial_loss"),
+
   description: text("description"),
 
   // Optional Evidence

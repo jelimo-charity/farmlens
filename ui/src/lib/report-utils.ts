@@ -59,6 +59,7 @@ export interface ComputedStats {
   totalFarmSizeAcres: number;
   averageLossPercentage: number;
   mostAffectedCrop: string | null;
+  estimatedFinancialLoss: number;
 }
 
 /** Derives the top-row stat card values from whatever report list is currently in view (already filtered). */
@@ -74,7 +75,12 @@ export function computeStats(reports: Report[]): ComputedStats {
     : 0;
   const mostAffectedCrop = countBy(reports, "crop")[0]?.label ?? null;
 
-  return { totalReports, totalFarmSizeAcres, averageLossPercentage, mostAffectedCrop };
+  const estimatedFinancialLoss = reports.reduce(
+    (sum, report) => sum + (report.estimatedFinancialLoss ?? 0),
+    0,
+  );
+
+  return { totalReports, totalFarmSizeAcres, averageLossPercentage, mostAffectedCrop, estimatedFinancialLoss };
 }
 
 export interface TimeSeriesPoint {
@@ -99,20 +105,50 @@ export function reportsOverTime(reports: Report[]): TimeSeriesPoint[] {
     }));
 }
 
-/** Average estimatedLossPercentage grouped by a key (e.g. "crop"), sorted worst-first. */
-export function averageLossBy(reports: Report[], key: keyof Report): CountEntry[] {
-  const sums = new Map<string, { total: number; count: number }>();
+/** Average loss % and total financial loss grouped by crop (or another field). */
+export function averageLossBy(
+  reports: Report[],
+  key: keyof Report,
+): CropLossEntry[] {
+
+  const groups = new Map<
+    string,
+    {
+      totalLoss: number;
+      financialLoss: number;
+      reportCount: number;
+    }
+  >();
+
   for (const report of reports) {
-    const raw = report[key];
-    const label = typeof raw === "string" ? raw : String(raw);
-    const entry = sums.get(label) ?? { total: 0, count: 0 };
-    entry.total += report.estimatedLossPercentage ?? 0;
-    entry.count += 1;
-    sums.set(label, entry);
+    const label = String(report[key]);
+
+    const entry = groups.get(label) ?? {
+      totalLoss: 0,
+      financialLoss: 0,
+      reportCount: 0,
+    };
+
+    entry.totalLoss += report.estimatedLossPercentage ?? 0;
+    entry.financialLoss += report.estimatedFinancialLoss ?? 0;
+    entry.reportCount++;
+
+    groups.set(label, entry);
   }
-  return Array.from(sums.entries())
-    .map(([label, { total, count }]) => ({ label, value: Math.round((total / count) * 10) / 10 }))
-    .sort((a, b) => b.value - a.value);
+
+  return Array.from(groups.entries()).map(([label, value]) => ({
+    label,
+    averageLossPercentage:
+      Math.round((value.totalLoss / value.reportCount) * 10) / 10,
+    totalFinancialLoss: value.financialLoss,
+    reportCount: value.reportCount,
+  }));
+}
+export interface CropLossEntry {
+  label: string;
+  averageLossPercentage: number;
+  totalFinancialLoss: number;
+  reportCount: number;
 }
 
 /** Top N sub-counties by report count, with average loss for context. */
@@ -158,4 +194,50 @@ export function toChartSlices(entries: CountEntry[], max = 4): ChartSlice[] {
   const restTotal = rest.reduce((sum, e) => sum + e.value, 0);
   const slices = restTotal > 0 ? [...top, { label: "Others", value: restTotal }] : top;
   return slices.map((slice, i) => ({ ...slice, color: CHART_PALETTE[i % CHART_PALETTE.length] }));
+}
+
+/** Formats Kenyan Shillings into a compact display. */
+export function formatCurrencyShort(value: number): string {
+  if (value >= 1_000_000_000) {
+    return `KES ${(value / 1_000_000_000).toFixed(1)}B`;
+  }
+
+  if (value >= 1_000_000) {
+    return `KES ${(value / 1_000_000).toFixed(1)}M`;
+  }
+
+  if (value >= 1_000) {
+    return `KES ${(value / 1_000).toFixed(1)}K`;
+  }
+
+  return `KES ${value.toLocaleString()}`;
+}
+
+
+export interface ClimateCropMatrixEntry {
+  crop: string;
+  [event: string]: string | number;
+}
+
+export function climateCropMatrix(
+  reports: Report[],
+): ClimateCropMatrixEntry[] {
+  const crops = [...new Set(reports.map((r) => r.crop))];
+  const events = [...new Set(reports.map((r) => r.climateEvent))];
+
+  return crops.map((crop) => {
+    const row: ClimateCropMatrixEntry = {
+      crop,
+    };
+
+    events.forEach((event) => {
+      row[event] = reports.filter(
+        (r) =>
+          r.crop === crop &&
+          r.climateEvent === event,
+      ).length;
+    });
+
+    return row;
+  });
 }

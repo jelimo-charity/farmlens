@@ -2,6 +2,9 @@ import type { UseFormReturn } from "react-hook-form";
 import { Field, inputClass } from "../Fields";
 import type { ReportFormValues } from "@/lib/report-form-schema";
 
+const CURRENT_YEAR = new Date().getFullYear();
+const PLANTING_YEAR_OPTIONS = Array.from({ length: 6 }, (_, i) => CURRENT_YEAR - i);
+
 interface FarmDetailsStepProps {
   form: UseFormReturn<ReportFormValues>;
   crops: string[];
@@ -35,7 +38,9 @@ export function FarmDetailsStep({ form, crops, plantingMonths, growthStages }: F
           min="0"
           className={inputClass}
           placeholder="e.g. 2.5"
-          {...register("farmSizeAcres")}
+          {...register("farmSizeAcres", {
+            setValueAs: (v) => (v === "" ? undefined : Number(v)),
+          })}
         />
       </Field>
 
@@ -52,13 +57,20 @@ export function FarmDetailsStep({ form, crops, plantingMonths, growthStages }: F
         </Field>
 
         <Field label="Planting Year" htmlFor="plantingYear" error={errors.plantingYear?.message}>
-          <input
+          <select
             id="plantingYear"
-            type="number"
             className={inputClass}
-            placeholder="e.g. 2026"
-            {...register("plantingYear")}
-          />
+            {...register("plantingYear", {
+              setValueAs: (v) => (v === "" ? undefined : Number(v)),
+            })}
+          >
+            <option value="">Select year</option>
+            {PLANTING_YEAR_OPTIONS.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
         </Field>
       </div>
 

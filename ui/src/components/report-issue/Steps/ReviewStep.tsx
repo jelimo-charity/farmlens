@@ -61,6 +61,14 @@ export function ReviewStep({ values, onEditStep }: ReviewStepProps) {
         </div>
         <ReviewRow label="Climate Event" value={values.climateEvent} />
         <ReviewRow label="Estimated Loss" value={`${values.estimatedLossPercentage ?? 0}%`} />
+        <ReviewRow
+  label="Estimated Financial Loss"
+  value={
+    values.estimatedFinancialLoss
+      ? `KES ${values.estimatedFinancialLoss.toLocaleString()}`
+      : undefined
+  }
+/>
         {values.description && (
           <p className="mt-2 rounded-md bg-gray-50 p-2 text-sm text-gray-600">{values.description}</p>
         )}

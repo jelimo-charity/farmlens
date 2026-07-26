@@ -2,9 +2,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CaretLeft, CaretRight, CheckCircle } from "@phosphor-icons/react";
+import {
+  CaretLeft,
+  CaretRight,
+  CheckCircle,
+} from "@phosphor-icons/react";
+
 import { ReportsApi } from "@/api/reports";
 import { useReportMetadata } from "@/hooks/useReportMetadata";
+
 import {
   reportFormSchema,
   REPORT_FORM_STEPS,
@@ -12,7 +18,9 @@ import {
   REPORT_FORM_DEFAULTS,
   type ReportFormValues,
 } from "@/lib/report-form-schema";
+
 import type { CreateReportDto } from "@/types/report";
+
 import { Stepper } from "./Stepper";
 import { FarmLocationStep } from "./Steps/FarmLocationStep";
 import { FarmDetailsStep } from "./Steps/FarmDetailsStep";
@@ -23,7 +31,9 @@ const LAST_STEP = REPORT_FORM_STEPS.length - 1;
 
 export function ReportForm() {
   const [step, setStep] = useState(0);
-  const { data: metadata, isLoading: metadataLoading } = useReportMetadata();
+
+  const { data: metadata, isLoading: metadataLoading } =
+    useReportMetadata();
 
   const form = useForm<ReportFormValues>({
     resolver: zodResolver(reportFormSchema),
@@ -33,7 +43,13 @@ export function ReportForm() {
 
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, isSuccess, isError, reset: resetMutation } = useMutation({
+  const {
+    mutate,
+    isPending,
+    isSuccess,
+    isError,
+    reset: resetMutation,
+  } = useMutation({
     mutationFn: (values: ReportFormValues) => {
       const payload: CreateReportDto = {
         ...values,
@@ -41,23 +57,31 @@ export function ReportForm() {
         ward: values.ward || undefined,
         description: values.description || undefined,
         imageUrl: values.imageUrl || undefined,
+        
       };
+
       return ReportsApi.create(payload);
     },
+
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reports"] });
+      queryClient.invalidateQueries({
+        queryKey: ["reports"],
+      });
     },
   });
 
   async function goNext() {
-    const fieldsToValidate = STEP_FIELDS[step];
-    const valid = await form.trigger(fieldsToValidate);
+    const fields = STEP_FIELDS[step];
+
+    const valid = await form.trigger(fields);
+
     if (!valid) return;
-    setStep((s) => Math.min(LAST_STEP, s + 1));
+
+    setStep((current) => Math.min(current + 1, LAST_STEP));
   }
 
   function goBack() {
-    setStep((s) => Math.max(0, s - 1));
+    setStep((current) => Math.max(current - 1, 0));
   }
 
   function onSubmit(values: ReportFormValues) {
@@ -70,18 +94,35 @@ export function ReportForm() {
     resetMutation();
   }
 
+  if (metadataLoading || !metadata) {
+    return (
+      <div className="rounded-xl border border-gray-200 bg-white p-10 text-center text-sm text-gray-500">
+        Loading form...
+      </div>
+    );
+  }
+
   if (isSuccess) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white p-10 text-center">
-        <CheckCircle size={48} weight="fill" className="text-green-600" />
-        <h2 className="text-lg font-semibold text-gray-900">Report submitted</h2>
+        <CheckCircle
+          size={48}
+          weight="fill"
+          className="text-green-600"
+        />
+
+        <h2 className="text-lg font-semibold text-gray-900">
+          Report Submitted
+        </h2>
+
         <p className="max-w-sm text-sm text-gray-500">
-          Thank you — your report has been recorded and will help organizations respond faster.
+          Thank you for reporting this climate impact.
         </p>
+
         <button
           type="button"
           onClick={startNewReport}
-          className="mt-2 rounded-lg bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
+          className="mt-2 rounded-lg bg-green-700 px-4 py-2 text-white hover:bg-green-800"
         >
           Submit Another Report
         </button>
@@ -89,19 +130,22 @@ export function ReportForm() {
     );
   }
 
-  if (metadataLoading || !metadata) {
-    return <div className="rounded-xl border border-gray-200 bg-white p-10 text-center text-sm text-gray-500">Loading form...</div>;
-  }
-
   return (
     <div className="mx-auto max-w-xl space-y-6">
-      <Stepper steps={REPORT_FORM_STEPS} currentStep={step} />
+      <Stepper
+        steps={REPORT_FORM_STEPS}
+        currentStep={step}
+      />
 
+      {/* Prevent native browser form submission */}
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={(e) => e.preventDefault()}
         className="rounded-xl border border-gray-200 bg-white p-5"
       >
-        {step === 0 && <FarmLocationStep form={form} />}
+        {step === 0 && (
+          <FarmLocationStep form={form} />
+        )}
+
         {step === 1 && (
           <FarmDetailsStep
             form={form}
@@ -110,13 +154,25 @@ export function ReportForm() {
             growthStages={metadata.growthStages}
           />
         )}
-        {step === 2 && <ClimateImpactStep form={form} climateEvents={metadata.climateEvents} />}
-        {step === 3 && <ReviewStep values={form.getValues()} onEditStep={setStep} />}
+
+        {step === 2 && (
+          <ClimateImpactStep
+            form={form}
+            climateEvents={metadata.climateEvents}
+          />
+        )}
+
+        {step === 3 && (
+          <ReviewStep
+            values={form.getValues()}
+            onEditStep={setStep}
+          />
+        )}
 
         {isError && (
-          <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
-            Something went wrong submitting your report. Please try again.
-          </p>
+          <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+            Something went wrong while submitting the report.
+          </div>
         )}
 
         <div className="mt-6 flex items-center justify-between">
@@ -132,6 +188,7 @@ export function ReportForm() {
 
           {step < LAST_STEP ? (
             <button
+              key="next-button"
               type="button"
               onClick={goNext}
               className="flex items-center gap-1 rounded-lg bg-green-700 px-5 py-2 text-sm font-medium text-white hover:bg-green-800"
@@ -141,9 +198,11 @@ export function ReportForm() {
             </button>
           ) : (
             <button
-              type="submit"
+              key="submit-button"
+              type="button"
               disabled={isPending}
-              className="rounded-lg bg-green-700 px-5 py-2 text-sm font-medium text-white hover:bg-green-800 disabled:opacity-60"
+              onClick={form.handleSubmit(onSubmit)}
+              className="rounded-lg bg-green-700 px-5 py-2 text-sm font-medium text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isPending ? "Submitting..." : "Submit Report"}
             </button>

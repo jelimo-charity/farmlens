@@ -4,25 +4,39 @@ interface StatCardProps {
   icon: ReactNode;
   value: string;
   label: string;
-  accent: "green" | "amber" | "blue" | "violet";
+  accent: "green" | "amber" | "blue" | "violet" | "maroon";
 }
 
 const accentStyles: Record<StatCardProps["accent"], string> = {
-  green: "bg-green-50 text-green-700",
+  green: "bg-emerald-50 text-emerald-700",
   amber: "bg-amber-50 text-amber-700",
-  blue: "bg-blue-50 text-blue-700",
+  blue: "bg-sky-50 text-sky-700",
   violet: "bg-violet-50 text-violet-700",
+  maroon: "bg-rose-50 text-rose-700",
 };
 
-export function StatCard({ icon, value, label, accent }: StatCardProps) {
+export function StatCard({
+  icon,
+  value,
+  label,
+  accent,
+}: StatCardProps) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-4">
-      <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg ${accentStyles[accent]}`}>
+    <div className="flex h-28 items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+      <div
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${accentStyles[accent]}`}
+      >
         {icon}
       </div>
-      <div className="min-w-0">
-        <p className="truncate text-xl font-semibold text-gray-900">{value}</p>
-        <p className="truncate text-sm text-gray-500">{label}</p>
+
+      <div className="flex flex-1 flex-col justify-center min-w-0">
+        <p className="break-words text-lg font-bold leading-tight text-gray-900">
+          {value}
+        </p>
+
+        <p className="mt-1 text-sm leading-5 text-gray-500">
+          {label}
+        </p>
       </div>
     </div>
   );

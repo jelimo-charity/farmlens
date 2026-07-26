@@ -110,6 +110,16 @@ export class CreateReportDto {
   estimatedLossPercentage!: number;
 
   @ApiPropertyOptional({
+  example: 35000,
+  description: "Estimated financial loss in Kenyan Shillings",
+})
+@IsOptional()
+@IsNumber()
+@Min(0)
+
+   estimatedFinancialLoss?: number;
+
+  @ApiPropertyOptional({
     example:
       'Maize has dried due to delayed rains over the past month.',
   })

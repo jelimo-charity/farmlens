@@ -13,6 +13,7 @@ export interface Report {
   climateEvent: string;
   reportDate: string;
   estimatedLossPercentage: number;
+  estimatedFinancialLoss: number;
   description: string;
   imageUrl: string | null;
   createdAt: string;
@@ -42,6 +43,7 @@ export interface CreateReportDto {
   climateEvent: string;
   reportDate: string;
   estimatedLossPercentage: number;
+  estimatedFinancialLoss: number;
   description?: string;
   imageUrl?: string;
 }
@@ -65,6 +67,7 @@ export interface MapReport {
   crop: string;
   climateEvent: string;
   estimatedLossPercentage: number;
+  estimatedFinancialLoss: number;
 }
 
 export interface DashboardStats {
@@ -74,4 +77,5 @@ export interface DashboardStats {
   totalFarmSizeAcres: number;
   mostAffectedCrop: string | null;
   mostReportedClimateEvent: string | null;
+  estimatedFinancialLoss: number;
 }

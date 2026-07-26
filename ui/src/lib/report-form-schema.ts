@@ -16,7 +16,7 @@ export const reportFormSchema = z.object({
     .number({ message: "Planting year is required" })
     .int()
     .min(2000, "Enter a valid year")
-    .max(new Date().getFullYear() + 1, "Enter a valid year"),
+    .max(new Date().getFullYear(), "Planting year can't be in the future"),
   growthStage: z.string().min(1, "Growth stage is required"),
 
   // Step 3 — Climate Impact
@@ -27,6 +27,7 @@ export const reportFormSchema = z.object({
     .max(100, "Must be between 0 and 100"),
   description: z.string().max(1000, "Keep it under 1000 characters").optional(),
   imageUrl: z.union([z.string().url("Must be a valid URL"), z.literal("")]).optional(),
+  estimatedFinancialLoss: z.number({ message: "Estimated financial loss is required" }).min(0, "Estimated financial loss must be greater than or equal to 0"),
 });
 
 export type ReportFormValues = z.infer<typeof reportFormSchema>;

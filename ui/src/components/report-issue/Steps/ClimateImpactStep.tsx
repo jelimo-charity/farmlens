@@ -29,7 +29,7 @@ export function ClimateImpactStep({ form, climateEvents }: ClimateImpactStepProp
       <div>
         <div className="mb-1.5 flex items-center justify-between">
           <label htmlFor="estimatedLossPercentage" className="text-sm font-medium text-gray-700">
-            Estimated Loss
+            Estimated Crop Loss
           </label>
           <span className="text-sm font-semibold text-green-700">{lossValue}%</span>
         </div>
@@ -40,12 +40,39 @@ export function ClimateImpactStep({ form, climateEvents }: ClimateImpactStepProp
           max={100}
           step={5}
           className="w-full accent-green-700"
-          {...register("estimatedLossPercentage")}
+          {...register("estimatedLossPercentage", {
+            setValueAs: (v) => (v === "" ? undefined : Number(v)),
+          })}
         />
         {errors.estimatedLossPercentage && (
           <p className="mt-1 text-xs text-red-600">{errors.estimatedLossPercentage.message}</p>
         )}
       </div>
+
+      <Field
+  label="Estimated Financial Loss (KES)"
+  htmlFor="estimatedFinancialLoss"
+  optional
+  error={errors.estimatedFinancialLoss?.message}
+>
+  <input
+    id="estimatedFinancialLoss"
+    type="number"
+    min="0"
+    step="100"
+    className={inputClass}
+    placeholder="e.g. 35000"
+    {...register("estimatedFinancialLoss", {
+      setValueAs: (v) => (v === "" ? undefined : Number(v)),
+    })}
+  />
+</Field>
+
+<p className="text-xs text-gray-500">
+  Optional. Estimate the value of crops, inputs, or income lost due to this
+  climate event.
+</p>
+
 
       <Field label="Description" htmlFor="description" optional error={errors.description?.message}>
         <textarea

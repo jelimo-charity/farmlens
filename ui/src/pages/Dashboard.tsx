@@ -3,7 +3,6 @@ import { useReports } from "@/hooks/useReports";
 import { useDashboardFilters } from "@/context/dashboard-filters";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { DonutCard } from "@/components/dashboard/DonutCard";
-import { ClimateEventsBarCard } from "@/components/dashboard/ClimateEventsBarCard";
 import { RecentReportsCard } from "@/components/dashboard/RecentReportsCard";
 import { ReportsMapCard } from "@/components/dashboard/ReportsMapCard";
 import { computeStats, countBy, toChartSlices } from "@/lib/report-utils";
@@ -17,7 +16,6 @@ export default function DashboardPage() {
 
   const countyEntries = countBy(reports, "county").slice(0, 4);
   const cropSlices = toChartSlices(countBy(reports, "crop"));
-  const climateEntries = countBy(reports, "climateEvent");
 
   if (isLoading) {
     return <div className="p-6 text-sm text-gray-500">Loading dashboard...</div>;
@@ -81,7 +79,6 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <DonutCard title="Reports by County" slices={toChartSlices(countyEntries)} />
         <DonutCard title="Affected Crops" slices={cropSlices} />
-        <ClimateEventsBarCard title="Climate Events" entries={climateEntries} />
       </div>
     </div>
   );
